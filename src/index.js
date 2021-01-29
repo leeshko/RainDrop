@@ -1,16 +1,13 @@
 import {calculatorPressOperator} from   './js/calculator';
 import {calculatorPressNumber}   from   './js/calculator';
-import {createDrop}              from   './js/drop';
+import {createDrop}              from   './js/drop';              
 import './css/style.css';
 
 const demoButton = document.querySelector('.intro-button');
 const startButton = document.querySelector('.start-button');
 const screenFirst = document.querySelector('.intro');
 const screenSecond = document.querySelector('.game');
-let calculatorDisplay = document.querySelector('.display');         //
-const numButtons = document.querySelectorAll('.numButton');         //
-const operatorButtons = document.querySelectorAll('.operator');     //  May be no Need!!!!
-let displayValue;                                                   //
+
 
 
 function startGame() {
@@ -18,11 +15,11 @@ function startGame() {
     screenSecond.classList.remove('display-none');
     calculatorPressNumber();
     calculatorPressOperator();
-    createDrop();
+    setInterval(() => createDrop(), 5000);
 }
 
 
-demoButton.addEventListener('click', console.log('DEMO'));
+demoButton.addEventListener('click', console.log('DEMO'));      
 startButton.addEventListener('click', startGame);
 
 

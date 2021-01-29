@@ -1,7 +1,8 @@
 let calculatorDisplay = document.querySelector('.display');
 const numButtons = document.querySelectorAll('.numButton');
 const operatorButtons = document.querySelectorAll('.operator');
-let displayValue;
+let displayValue;   // value displayed on calc screen
+let displayResult;  // value after pressing enter
 
 function deleteDisplay() {
     displayValue = undefined;
@@ -20,7 +21,12 @@ export function calculatorPressOperator() {
                 deleteDisplay();
             } else if (operatorButton.innerHTML === 'Clear') {
                 clearDisplay();
-            }
+            } else if (operatorButton.innerHTML === 'Enter') {
+            console.log('Enter Pressed');
+            displayResult = calculatorDisplay.innerHTML;
+            sessionStorage.setItem('displayResult', displayResult);
+            deleteDisplay();
+            } return;
         });
     });
     window.addEventListener('keydown', function (button){
@@ -30,8 +36,11 @@ export function calculatorPressOperator() {
             clearDisplay();
         } else if (button.key === 'Enter') {
             console.log('Enter Pressed');
+            displayResult = calculatorDisplay.innerHTML;
+            sessionStorage.setItem('displayResult', displayResult);
+            deleteDisplay();
         }
-            return;
+        return;
     })
 }
 
@@ -55,7 +64,7 @@ export function calculatorPressNumber() {
             if(!displayValue) {
                 calculatorDisplay.innerHTML = button.key;  
                 displayValue = button.key;         
-            } else if (displayValue > 99) {
+            } else if (displayValue > 9999) {
                 return;
             } else {
             calculatorDisplay.innerHTML += button.key;

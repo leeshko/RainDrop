@@ -1,17 +1,18 @@
 const gameScreen = document.querySelector('.game-screen');
+const scorePanel = document.querySelector('.scores');
 const operators = ['+', '-', '*', '/'];
-const maxFirstNum = 99;
-const maxSecondNum = 99;
-
-let num1 = createNumber(maxFirstNum);
-let num2 = createNumber(maxSecondNum);
+const maxFirstNum = 10;
+const maxSecondNum = 10;
+let dropSpeed = 10;
+let resultInDrop;
+let num2;   
+let scoreCounter = 0;                                            // наверное файл перегружен, я думаю, что его нужно было делить на пару логических
+                                                        // но не знаю как, боюсь резать, чтобы не загрязнуть в этом еще на пару часов ))
 
 
 function createNumber(value) {
     return Math.floor(Math.random() * Math.floor(value))
 };
-
-const operatorInDrop = operators[createNumber(4)];
 
 //Drops Position
 
@@ -20,6 +21,29 @@ function randomDropHorizontalPos(minLeft, maxRight) {                           
 }
 
 export function createDrop() {
+    let operatorInDrop = operators[createNumber(4)];
+    let num1 = createNumber(maxFirstNum);
+
+    if (operatorInDrop === '*') {
+        num2 = createNumber(maxSecondNum);
+        resultInDrop = (num1 * num2);
+    } else if (operatorInDrop === '/') {        
+        do {
+            num2 = createNumber(maxSecondNum);
+        }
+        while (num1 % num2 !== 0)
+        resultInDrop = num1 / num2;
+    } else if (operatorInDrop === '+') {
+        num2 = createNumber(maxSecondNum);
+        resultInDrop = (num1 + num2);
+    } else {
+        do {
+            num2 = createNumber(maxSecondNum);
+        }
+        while (num1 < num2)
+        resultInDrop = num1 - num2;
+    }
+
     const dropElement = document.createElement('div');
     dropElement.classList.add('drop');
 
@@ -37,49 +61,57 @@ export function createDrop() {
     const secondNumberElement = document.createElement('div');
     secondNumberElement.classList.add('secondNum');
     secondNumberElement.innerHTML = num2;
-    dropElement.style.top = '-10px';                    //why this values are not available from string 54 
-    dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - 100)}px`;   // 100px - drop size   
-
     gameScreen.prepend(dropElement);
     dropElement.prepend(operatorElement);
     dropElement.append(numbersElement);
     numbersElement.append(firstNumberElement);
     numbersElement.append(secondNumberElement);
-
+    
+    dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - dropElement.offsetWidth)}px`;      
 
     ///////////////////////////////////////////////////////////// insert falling
+    let dropPositionTop = `-${dropElement.offsetHeight}`;
     const water = document.querySelector('.water');
     let waterLevel = window.innerHeight - water.offsetHeight - water.offsetHeight;
-    const dropSpeed = 10;
-    let count = 0;
 
     const dropFall = () => {
-        dropElement.style.top = count + 'px';
-        count++;
-
-        if (count < waterLevel) {
+        dropElement.style.top = dropPositionTop + 'px';
+        dropPositionTop++;
+        
+        let calculatorValue = parseInt(sessionStorage.getItem('displayResult'));
+        if (dropPositionTop < waterLevel) {
             setTimeout(function () {
                 dropFall();
+
+                if (resultInDrop === calculatorValue) {
+                
+                    dropElement.classList.add('drop-disappearing');
+                    
+                } else {
+                 
+                }
+
             }, dropSpeed);
+        } else {
+            dropElement.classList.add('drop-disappearing');
+            dropElement.addEventListener('transitionend', function() {      // we need this?
+                dropElement.style.display = 'none'; // сами по себе в коде элементы так и остаются, это норм? хотя инспект по ним не делается вроде
+            });
         }
     };
+    dropFall(); 
+}
 
-    dropFall();
-
-    //////////////////////////////////////////////////////////////////////////
-
-    if (operatorInDrop === '*') {
-        return (num1 * num2);
-    } else if (operatorInDrop === '/') {        //have no idea how to make numbers in definite range
-        return (num1 / num2);
-    } else if (operatorInDrop === '+') {
-        return (num1 + num2);
+function compareResult(){                               // the function is not used, because i dont know were paste it (((
+                                                        // в это уперся, и не могу ни счетчик сделать, ни дальнейшую механику
+    if (resultInDrop === calculatorValue) {
+        scoreCounter += 10;
+        scorePanel.innerHTML = scoreCounter;        
+        dropElement.classList.add('drop-disappearing');   
     } else {
-        return (num1 - num2);
+        scoreCounter -= 10;
+        scorePanel.innerHTML = scoreCounter; 
     }
-
-    // console.log(water.offsetHeight)                           //расскажи подробнее по поводу момента отрисовки высоты блока с водой
-
 }
 
 

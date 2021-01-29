@@ -96,6 +96,13 @@ html {
     display: flex;
 }
 
+.drop-disappearing {
+    transition: all 0.5s;
+    width: 130px;
+    height: 130px;
+    opacity: 0;
+}
+
 .sign, .numbers {
     align-self:center;
     font-size: 2rem;
