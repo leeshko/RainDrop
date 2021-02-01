@@ -6,8 +6,22 @@ const maxSecondNum = 10;
 let dropSpeed = 10;
 let resultInDrop;
 let num2;   
-let scoreCounter = 0;                                            // наверное файл перегружен, я думаю, что его нужно было делить на пару логических
-                                                        // но не знаю как, боюсь резать, чтобы не загрязнуть в этом еще на пару часов ))
+let scoreCounter = 0;   
+let dropValueCallback;  
+const dropElement = document.createElement('div'); //это вынес сюда, чтобы была видна со всех функций. 
+                                                    // чувствую, ты скажешь, что это неправильно
+let dropPositionTop = `-${dropElement.offsetHeight}`;
+const water = document.querySelector('.water');
+let waterLevel = window.innerHeight - water.offsetHeight - water.offsetHeight;
+
+export default {
+    drop: initDrops
+}
+
+function initDrops(dropValue) {
+    dropValueCallback = dropValue;
+    createDrop();
+}
 
 
 function createNumber(value) {
@@ -20,7 +34,7 @@ function randomDropHorizontalPos(minLeft, maxRight) {                           
     return Math.random() * (maxRight - minLeft) + minLeft;
 }
 
-export function createDrop() {
+function createDrop() {
     let operatorInDrop = operators[createNumber(4)];
     let num1 = createNumber(maxFirstNum);
 
@@ -44,7 +58,6 @@ export function createDrop() {
         resultInDrop = num1 - num2;
     }
 
-    const dropElement = document.createElement('div');
     dropElement.classList.add('drop');
 
     const operatorElement = document.createElement('div');
@@ -68,42 +81,14 @@ export function createDrop() {
     numbersElement.append(secondNumberElement);
     
     dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - dropElement.offsetWidth)}px`;      
+    
+    dropValueCallback(resultInDrop);
 
-    ///////////////////////////////////////////////////////////// insert falling
-    let dropPositionTop = `-${dropElement.offsetHeight}`;
-    const water = document.querySelector('.water');
-    let waterLevel = window.innerHeight - water.offsetHeight - water.offsetHeight;
-
-    const dropFall = () => {
-        dropElement.style.top = dropPositionTop + 'px';
-        dropPositionTop++;
-        
-        let calculatorValue = parseInt(sessionStorage.getItem('displayResult'));
-        if (dropPositionTop < waterLevel) {
-            setTimeout(function () {
-                dropFall();
-
-                if (resultInDrop === calculatorValue) {
-                
-                    dropElement.classList.add('drop-disappearing');
-                    
-                } else {
-                 
-                }
-
-            }, dropSpeed);
-        } else {
-            dropElement.classList.add('drop-disappearing');
-            dropElement.addEventListener('transitionend', function() {      // we need this?
-                dropElement.style.display = 'none'; // сами по себе в коде элементы так и остаются, это норм? хотя инспект по ним не делается вроде
-            });
-        }
-    };
     dropFall(); 
 }
 
-function compareResult(){                               // the function is not used, because i dont know were paste it (((
-                                                        // в это уперся, и не могу ни счетчик сделать, ни дальнейшую механику
+function compareResult(){                             
+    let calculatorValue = parseInt(sessionStorage.getItem('displayResult'));    
     if (resultInDrop === calculatorValue) {
         scoreCounter += 10;
         scorePanel.innerHTML = scoreCounter;        
@@ -114,4 +99,18 @@ function compareResult(){                               // the function is not u
     }
 }
 
-
+function dropFall () {
+    dropElement.style.top = dropPositionTop + 'px';
+    dropPositionTop++;
+    
+    if (dropPositionTop < waterLevel) {
+        setTimeout(function () {
+            dropFall();
+        }, dropSpeed);
+    } else {
+        dropElement.classList.add('drop-disappearing');
+        dropElement.addEventListener('transitionend', function() {      // we need this?
+            dropElement.style.display = 'none'; // сами по себе в коде элементы так и остаются, это норм? хотя инспект по ним не делается вроде
+        });
+    }
+};

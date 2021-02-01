@@ -1,6 +1,5 @@
-import {calculatorPressOperator} from   './js/calculator';
-import {calculatorPressNumber}   from   './js/calculator';
-import {createDrop}              from   './js/drop';              
+import calculator from   './js/calculator';
+import drop       from   './js/drop';              
 import './css/style.css';
 
 const demoButton = document.querySelector('.intro-button');
@@ -11,13 +10,23 @@ const screenSecond = document.querySelector('.game');
 
 
 function startGame() {
-    screenFirst.classList.add('display-none');   
-    screenSecond.classList.remove('display-none');
-    calculatorPressNumber();
-    calculatorPressOperator();
-    setInterval(() => createDrop(), 5000);
+    screenFirst.classList.add('hide');   
+    screenSecond.classList.remove('hide');
+    calculator.init(reactOnEnter);
+    drop.drop(valueInDrop);
+    setInterval(() => drop.drop(), 5000);
 }
 
+function reactOnEnter (result) {                
+    console.log('enter pressed', result);
+}
+
+function valueInDrop (valueOfEquation) {
+    console.log('valueOfEquation', valueOfEquation)
+}
+
+//возможно эти две функции объединить, дать одной функции два этих параметра, 
+//и потом в этой же функции из сравнить??
 
 demoButton.addEventListener('click', console.log('DEMO'));      
 startButton.addEventListener('click', startGame);

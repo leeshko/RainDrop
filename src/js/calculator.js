@@ -3,6 +3,17 @@ const numButtons = document.querySelectorAll('.numButton');
 const operatorButtons = document.querySelectorAll('.operator');
 let displayValue;   // value displayed on calc screen
 let displayResult;  // value after pressing enter
+let onEnterCallback;
+
+export default {
+    init: initCalculator
+};
+
+function initCalculator(onEnter) {          
+    onEnterCallback = onEnter;                                                 
+    calculatorPressNumber();
+    calculatorPressOperator();
+}
 
 function deleteDisplay() {
     displayValue = undefined;
@@ -22,11 +33,10 @@ export function calculatorPressOperator() {
             } else if (operatorButton.innerHTML === 'Clear') {
                 clearDisplay();
             } else if (operatorButton.innerHTML === 'Enter') {
-            console.log('Enter Pressed');
-            displayResult = calculatorDisplay.innerHTML;
-            sessionStorage.setItem('displayResult', displayResult);
-            deleteDisplay();
-            } return;
+                displayResult = calculatorDisplay.innerHTML;
+                onEnterCallback(displayResult);
+                deleteDisplay();
+            }
         });
     });
     window.addEventListener('keydown', function (button){
@@ -35,12 +45,10 @@ export function calculatorPressOperator() {
         } else if (button.key === 'Backspace') {
             clearDisplay();
         } else if (button.key === 'Enter') {
-            console.log('Enter Pressed');
             displayResult = calculatorDisplay.innerHTML;
-            sessionStorage.setItem('displayResult', displayResult);
+            onEnterCallback(displayResult);
             deleteDisplay();
         }
-        return;
     })
 }
 
