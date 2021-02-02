@@ -1,27 +1,37 @@
 const gameScreen = document.querySelector('.game-screen');
-const scorePanel = document.querySelector('.scores');
+
+let dropElement;
 const operators = ['+', '-', '*', '/'];
 const maxFirstNum = 10;
 const maxSecondNum = 10;
 let dropSpeed = 10;
 let resultInDrop;
-let num2;   
-let scoreCounter = 0;   
-let dropValueCallback;  
-const dropElement = document.createElement('div'); //это вынес сюда, чтобы была видна со всех функций. 
-                                                    // чувствую, ты скажешь, что это неправильно
-let dropPositionTop = `-${dropElement.offsetHeight}`;
+let num1 = createNumber(maxFirstNum);
+let num2;
+let operatorInDrop = operators[createNumber(4)];
+
+let dropValueCallback;
 const water = document.querySelector('.water');
-let waterLevel = window.innerHeight - water.offsetHeight - water.offsetHeight;
+let dropHeight;
+let dropPositionTop;
 
 export default {
-    drop: initDrops
+    dropInitialization: initDrops
 }
 
 function initDrops(dropValue) {
     dropValueCallback = dropValue;
-    createDrop();
+    
+    // const func = () => {
+        createDropContent();
+        createDropElement();
+        dropFall();
+    //     setTimeout (func, 3000);  
+    // }
+    // setTimeout(func, 3000);
 }
+    
+    
 
 
 function createNumber(value) {
@@ -34,14 +44,13 @@ function randomDropHorizontalPos(minLeft, maxRight) {                           
     return Math.random() * (maxRight - minLeft) + minLeft;
 }
 
-function createDrop() {
-    let operatorInDrop = operators[createNumber(4)];
-    let num1 = createNumber(maxFirstNum);
+
+function createDropContent() {
 
     if (operatorInDrop === '*') {
         num2 = createNumber(maxSecondNum);
         resultInDrop = (num1 * num2);
-    } else if (operatorInDrop === '/') {        
+    } else if (operatorInDrop === '/') {
         do {
             num2 = createNumber(maxSecondNum);
         }
@@ -57,7 +66,12 @@ function createDrop() {
         while (num1 < num2)
         resultInDrop = num1 - num2;
     }
+    dropValueCallback(resultInDrop);
+}
 
+function createDropElement() {
+
+    dropElement = document.createElement('div');
     dropElement.classList.add('drop');
 
     const operatorElement = document.createElement('div');
@@ -79,37 +93,26 @@ function createDrop() {
     dropElement.append(numbersElement);
     numbersElement.append(firstNumberElement);
     numbersElement.append(secondNumberElement);
-    
-    dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - dropElement.offsetWidth)}px`;      
-    
-    dropValueCallback(resultInDrop);
 
-    dropFall(); 
+    //start position
+    dropHeight = dropElement.offsetHeight;
+    dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - dropElement.offsetWidth)}px`;
+    dropElement.style.top = -dropHeight + 'px'; //delete - & /2
+    dropPositionTop = parseInt(dropElement.style.top);
 }
 
-function compareResult(){                             
-    let calculatorValue = parseInt(sessionStorage.getItem('displayResult'));    
-    if (resultInDrop === calculatorValue) {
-        scoreCounter += 10;
-        scorePanel.innerHTML = scoreCounter;        
-        dropElement.classList.add('drop-disappearing');   
-    } else {
-        scoreCounter -= 10;
-        scorePanel.innerHTML = scoreCounter; 
-    }
-}
+function dropFall() {
+    let waterLevel = gameScreen.offsetHeight - water.offsetHeight - dropHeight;
 
-function dropFall () {
-    dropElement.style.top = dropPositionTop + 'px';
     dropPositionTop++;
-    
+    dropElement.style.top = dropPositionTop + 'px';
     if (dropPositionTop < waterLevel) {
         setTimeout(function () {
             dropFall();
         }, dropSpeed);
     } else {
         dropElement.classList.add('drop-disappearing');
-        dropElement.addEventListener('transitionend', function() {      // we need this?
+        dropElement.addEventListener('transitionend', function () {      // we need this?
             dropElement.style.display = 'none'; // сами по себе в коде элементы так и остаются, это норм? хотя инспект по ним не делается вроде
         });
     }
