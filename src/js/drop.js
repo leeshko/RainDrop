@@ -1,38 +1,39 @@
 const gameScreen = document.querySelector('.game-screen');
-
-let dropElement;
 const operators = ['+', '-', '*', '/'];
 const maxFirstNum = 10;
 const maxSecondNum = 10;
 let dropSpeed = 10;
-let resultInDrop;
-let num1 = createNumber(maxFirstNum);
-let num2;
-let operatorInDrop = operators[createNumber(4)];
-
-let dropValueCallback;
 const water = document.querySelector('.water');
-let dropHeight;
-let dropPositionTop;
+let childrenIndex = 2;
+
+const drops = {};
 
 export default {
-    dropInitialization: initDrops
-}
+    dropInitialization: initDrops,
+    checkResult: checkResult,
+    reachedWater: reachedWater
 
-function initDrops(dropValue) {
-    dropValueCallback = dropValue;
-    
-    // const func = () => {
-        createDropContent();
-        createDropElement();
-        dropFall();
-    //     setTimeout (func, 3000);  
-    // }
-    // setTimeout(func, 3000);
-}
-    
-    
+};
 
+function initDrops() {
+    const func = () => {
+        const valuesInDrop = createDropContent();
+        const el = createDropElement(valuesInDrop);
+        const result = valuesInDrop.result;
+        const timeout = setTimeout(func, 3000);
+        const obj = { element: el, timeout: null };
+        if (drops[result]) {
+            drops[result].push(obj);
+         
+        } else {
+            drops[result] = [obj];
+        }
+        // drops[result] = [...(drops[result] || []), el]; 
+
+        dropFall(obj);
+    }
+    setTimeout(func, 3000);
+}
 
 function createNumber(value) {
     return Math.floor(Math.random() * Math.floor(value))
@@ -44,9 +45,11 @@ function randomDropHorizontalPos(minLeft, maxRight) {                           
     return Math.random() * (maxRight - minLeft) + minLeft;
 }
 
-
 function createDropContent() {
-
+    let num1 = createNumber(maxFirstNum);
+    let num2;
+    let resultInDrop;
+    let operatorInDrop = operators[createNumber(4)];
     if (operatorInDrop === '*') {
         num2 = createNumber(maxSecondNum);
         resultInDrop = (num1 * num2);
@@ -66,28 +69,28 @@ function createDropContent() {
         while (num1 < num2)
         resultInDrop = num1 - num2;
     }
-    dropValueCallback(resultInDrop);
+    return { num1, num2, operator: operatorInDrop, result: resultInDrop };
 }
 
-function createDropElement() {
+function createDropElement(valuesInDrop) {
 
-    dropElement = document.createElement('div');
+    const dropElement = document.createElement('div');
     dropElement.classList.add('drop');
 
     const operatorElement = document.createElement('div');
     operatorElement.classList.add('sign');
-    operatorElement.innerHTML = operatorInDrop;
+    operatorElement.innerHTML = valuesInDrop.operator;
 
     const numbersElement = document.createElement('div');
     numbersElement.classList.add('numbers');
 
     const firstNumberElement = document.createElement('div');
     firstNumberElement.classList.add('firstNum');
-    firstNumberElement.innerHTML = num1;
+    firstNumberElement.innerHTML = valuesInDrop.num1;
 
     const secondNumberElement = document.createElement('div');
     secondNumberElement.classList.add('secondNum');
-    secondNumberElement.innerHTML = num2;
+    secondNumberElement.innerHTML = valuesInDrop.num2;
     gameScreen.prepend(dropElement);
     dropElement.prepend(operatorElement);
     dropElement.append(numbersElement);
@@ -95,25 +98,56 @@ function createDropElement() {
     numbersElement.append(secondNumberElement);
 
     //start position
-    dropHeight = dropElement.offsetHeight;
+    const dropHeight = dropElement.offsetHeight;
     dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - dropElement.offsetWidth)}px`;
-    dropElement.style.top = -dropHeight + 'px'; //delete - & /2
-    dropPositionTop = parseInt(dropElement.style.top);
+    dropElement.style.top = -dropHeight + 'px';
+    return dropElement;
 }
 
-function dropFall() {
+function dropFall(obj) {
+    const dropElement = obj.element;
+    const dropHeight = dropElement.offsetHeight;
     let waterLevel = gameScreen.offsetHeight - water.offsetHeight - dropHeight;
+    let dropPositionTop = parseInt(dropElement.style.top);
 
     dropPositionTop++;
     dropElement.style.top = dropPositionTop + 'px';
+   
     if (dropPositionTop < waterLevel) {
-        setTimeout(function () {
-            dropFall();
+        obj.timeout = setTimeout(function () {
+            dropFall(obj);
         }, dropSpeed);
     } else {
-        dropElement.classList.add('drop-disappearing');
-        dropElement.addEventListener('transitionend', function () {      // we need this?
-            dropElement.style.display = 'none'; // сами по себе в коде элементы так и остаются, это норм? хотя инспект по ним не делается вроде
-        });
+        removeDrop(dropElement);
+        // подчистить в дропs
+        water.style.height = `${water.offsetHeight + 50}px`;
+        // lives.children[childrenIndex].style = 'visibility: hidden';
+        // childrenIndex--;
+        reachedWater();
+
+        // sound
+        //water level 
+        //score
     }
-};
+}
+
+function checkResult(result) {
+    if (drops[result] && drops[result].length !== 0) {
+        const elementObject = drops[result].shift();
+        
+        removeDrop(elementObject.element);
+        clearTimeout(elementObject.timeout);
+
+        return true;
+    }
+    return false;
+}
+
+function removeDrop(el) {
+    el.classList.add('drop-disappearing');
+    el.addEventListener('transitionend', (() => el.remove()));
+}
+
+function reachedWater() {
+
+}
