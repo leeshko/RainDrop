@@ -1,0 +1,308 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: Lato, Verdana, sans-serif;
+    font-size: 10 px;
+}
+
+.hide {
+    display: none;
+}
+
+.intro {
+    max-width: 1020px;
+    height: 100vh;
+    background: linear-gradient(to top, rgb(241, 248, 248), rgb(91, 194, 241));
+    margin: auto;
+    font-family: 'Potta One', cursive;
+}
+
+.logo {
+    margin: auto;
+}
+
+.logo > img, .logo-name {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logo > img {
+    width: 200px;
+}
+
+.logo-name, .game-over, .points {
+    color: blue;
+    font-size: 90px;
+    opacity: 0.5;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgb(0, 0, 0); 
+}
+
+.buttons {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.buttons > button {
+    width: 200px;
+    height: 40px;
+    border-color: cornflowerblue;
+    background-color: deepskyblue;
+    cursor: pointer;
+    font-family: inherit;
+    color: blue;
+
+}
+
+.wrapper {
+    max-width: 1020px;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-screen {                                      /*game screen*/
+    background-color: rgb(241, 248, 248);
+    flex: 2;
+    position: relative;
+    background: linear-gradient(to top, rgb(241, 248, 248), rgb(91, 194, 241));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.parallax > use{
+    animation:move-forever 12s linear infinite;
+ 
+  }
+
+  @keyframes move-forever{
+    0%{transform: translate(-90px , 0%)}
+    100%{transform: translate(85px , 0%)} 
+  }
+  
+  .water {
+    width: 100%;
+    height: 10px;
+    background-color:#2d55aa; 
+  }
+
+.drop {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(40, 135, 194);
+    font-size: 2rem;
+    border-radius: 50%;
+    position: absolute;
+    offset-position: 20;
+    display: flex;
+}
+
+.drop-disappearing {
+    transition: all 0.5s;
+    width: 130px;
+    height: 130px;
+    opacity: 0;
+}
+
+.sign, .numbers {
+    align-self:center;
+    font-size: 2rem;
+    font-weight: 800;
+
+}
+
+.sign {
+    justify-content: space-around;
+    display: flex;
+    flex: 1;
+}
+
+.numbers {
+    flex-direction: column;
+    flex: 2;
+}
+
+
+
+.calc-screen {                                          /*clc-screen*/
+    background-color: rgb(205, 243, 243);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.star-ico {
+    height: 20px;
+    width: 20px;
+    margin-left: 10px;
+}
+
+.counter, .lives {
+    height: 60px;
+    width: 70%;
+    background-color:rgb(233, 231, 221);
+    border: 3px solid white;
+    text-align: center;
+}
+
+.counter {
+    margin: 0 auto;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    font-size: 1.6rem;
+}
+
+.lives {
+    margin: 20px auto;
+    border-radius: 30px;
+}
+
+.scores {
+    color: tomato;
+}
+
+.heart {
+    height: 40px;
+    margin-top: 10px;
+}
+
+table {
+    border: 2px solid black;
+    margin: 20px auto;
+    border-radius: 5px;
+    background-color:burlywood;
+}
+
+.display {
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+    background-color:rgb(233, 231, 221);
+    height: 70px;
+    font-size: 2.5rem;
+    color: rgb(0, 0, 0);
+}
+
+td {
+    border: 2px solid black;
+    border-radius: 10%;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    user-select: none;
+}
+
+.numButton {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.numButton, .operator {
+    background-color: rgb(250, 245, 245);
+}
+
+.numButton:hover, .operator:hover {
+    cursor: pointer;
+    background-color:rgb(248, 201, 201);
+    transition: 0.5s;
+}
+
+.stat-screen {
+    flex-direction: column;
+}
+
+.game-over {
+    margin: 150px auto;
+}
+
+.points {
+    color: red;
+    flex: 1;
+}
+
+
+@media (max-width: 820px) {
+    .logo-name, .game-over, .points {
+        font-size: 60px; 
+    }
+
+    .buttons {
+        margin: auto;
+    }
+
+    .buttons > button {
+        margin-left: calc(50% - 200px/2);
+    }
+
+    .drop {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .drop-disappearing {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .sign, .numbers {
+        align-self:center;
+        font-size: 1rem;
+        font-weight: 800;
+    
+    }
+    
+    .numbers {
+        flex-direction: column;
+        flex: 2;
+    }
+    
+    .star-ico {
+        height: 15px;
+        width: 15px;
+        margin-left: 5px;
+    }
+    
+    .counter, .lives {
+        height: 40px;
+    }
+    
+    .counter {
+        font-size: 1rem;
+    }
+    
+    .lives {
+        margin: 10px auto;
+    }
+    
+    .heart {
+        height: 20px;
+    }
+    
+    .display {
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    td {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .numButton {
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .operator {
+        font-size: 5px;
+    }
+}
