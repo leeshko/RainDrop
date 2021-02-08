@@ -3,13 +3,17 @@ import calculator from './js/calculator';
 import drop from './js/drop';
 import scorePanel from './js/scorePanel';
 import './css/style.css';
+import finalscreen from './js/finalscreen';
+const wavesSound = document.querySelector('.waves');
 
 startScreen.init(startGame);
 
 function startGame() {
+    wavesSound.play()
     calculator.init(reactOnEnter);
     drop.dropInitialization();
-    
+    drop.reachedWater(reactOnWater); 
+    scorePanel.gameOver(finishGame);
 }
 
 function reactOnEnter(result) {
@@ -21,17 +25,14 @@ function compareResult(screenResult) {
     if (drop.checkResult(screenResult)) {
         scorePanel.increaseScore();
     } else {
-       scorePanel.decreaseHealth();
+       scorePanel.decreaseScore();
     }
 }
 
+function reactOnWater(){
+    scorePanel.wastedLife(); 
+}
 
-
-function reachedWater(){
-    if(drop.reachedWater) {
-    console.log('reached')
-    }
-    return;
-    
-    scorePanel.wastedLife();
+function finishGame() {
+    finalscreen.createStat();
 }

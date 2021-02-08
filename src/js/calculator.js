@@ -1,7 +1,8 @@
 let calculatorDisplay = document.querySelector('.display');
 const numButtons = document.querySelectorAll('.numButton');
 const operatorButtons = document.querySelectorAll('.operator');
-let displayValue;   // value displayed on calc screen
+const wavesSound = document.querySelector('.waves');
+let displayValue = null;   // value displayed on calc screen
 let displayResult;  // value after pressing enter
 let onEnterCallback;
 
@@ -68,11 +69,11 @@ export function calculatorPressNumber() {
             })
     });
     window.addEventListener('keydown', function (button){
-        if(parseInt(button.key)) {
+        if(parseInt(button.key) || button.key === '0') {
             if(!displayValue) {
                 calculatorDisplay.innerHTML = button.key;  
                 displayValue = button.key;         
-            } else if (displayValue > 9999) {
+            } else if (displayValue.length > 4) {
                 return;
             } else {
             calculatorDisplay.innerHTML += button.key;

@@ -44,7 +44,8 @@ const conf = {
     [
         new CopyPlugin({
           patterns: [
-            { from: './src/img/', to: `${destination}/img`}
+            { from: './src/img/', to: `${destination}/img`}, 
+            { from: './src/sounds/', to: `${destination}/sounds`}
           ]
         }),
     

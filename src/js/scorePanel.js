@@ -1,30 +1,44 @@
 const scorePanel = document.querySelector('.scores');
+const correctSound = document.querySelector('.correct');
+const errorSound = document.querySelector('.error');
+
 let bonusScore = 10;
 let currentScore = 0;
+let childrenIndex = 2;
+let callBackGameOver;
 
 
 export default {
     increaseScore: increaseScore,
-    decreaseHealth: decreaseHealth,
-    wastedLife: wastedLife
+    decreaseScore: decreaseScore,
+    wastedLife: wastedLife,
+    gameOver: gameOver
 };
 
 function increaseScore() {
     currentScore += bonusScore;
     scorePanel.innerHTML = currentScore;
     bonusScore++;
+    correctSound.play();
 }
 
-function decreaseHealth() {
+function decreaseScore() {
     bonusScore = 10;
-    // sound
-    //gameover from index.js
+    errorSound.play();
 }
 
 function wastedLife() {
-    
-    console.log('wasted Life');
-   
+    lives.children[childrenIndex].style = 'visibility: hidden';
+    if (childrenIndex > 0) {
+        childrenIndex--;
+        currentScore = scorePanel.innerHTML;
+        currentScore = currentScore > 4 ? currentScore -= 5 : currentScore = 0;
+        scorePanel.innerHTML = currentScore;
+    } else {
+        callBackGameOver();
+    }    
+}
 
-
+function gameOver (finish) {
+    callBackGameOver = finish;
 }

@@ -11,7 +11,7 @@ export default {
 function moveToGame() {
     screenFirst.classList.add('hide');
     screenSecond.classList.remove('hide');   
-    callbackOnStart();
+    callbackOnStart();  
 }
 
 function initGame(onStart){

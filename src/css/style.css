@@ -35,7 +35,7 @@ html {
     width: 200px;
 }
 
-.logo-name {
+.logo-name, .game-over, .points {
     color: blue;
     font-size: 90px;
     opacity: 0.5;
@@ -74,16 +74,26 @@ html {
     flex: 2;
     position: relative;
     background: linear-gradient(to top, rgb(241, 248, 248), rgb(91, 194, 241));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
-.water {
-    height: 100px;
+.parallax > use{
+    animation:move-forever 12s linear infinite;
+ 
+  }
+
+  @keyframes move-forever{
+    0%{transform: translate(-90px , 0%)}
+    100%{transform: translate(85px , 0%)} 
+  }
+  
+  .water {
     width: 100%;
-    background-color: rgb(73, 187, 240);
-    opacity: 0.5;
-    position:absolute;
-    bottom:0;   
-}
+    height: 10px;
+    background-color:#2d55aa; 
+  }
 
 .drop {
     width: 100px;
@@ -206,7 +216,93 @@ td {
     transition: 0.5s;
 }
 
+.stat-screen {
+    flex-direction: column;
+}
+
+.game-over {
+    margin: 150px auto;
+}
+
+.points {
+    color: red;
+    flex: 1;
+}
 
 
+@media (max-width: 820px) {
+    .logo-name, .game-over, .points {
+        font-size: 60px; 
+    }
 
+    .buttons {
+        margin: auto;
+    }
 
+    .buttons > button {
+        margin-left: calc(50% - 200px/2);
+    }
+
+    .drop {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .drop-disappearing {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .sign, .numbers {
+        align-self:center;
+        font-size: 1rem;
+        font-weight: 800;
+    
+    }
+    
+    .numbers {
+        flex-direction: column;
+        flex: 2;
+    }
+    
+    .star-ico {
+        height: 15px;
+        width: 15px;
+        margin-left: 5px;
+    }
+    
+    .counter, .lives {
+        height: 40px;
+    }
+    
+    .counter {
+        font-size: 1rem;
+    }
+    
+    .lives {
+        margin: 10px auto;
+    }
+    
+    .heart {
+        height: 20px;
+    }
+    
+    .display {
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    td {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .numButton {
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .operator {
+        font-size: 5px;
+    }
+}

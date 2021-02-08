@@ -27,7 +27,28 @@
     <section class="game hide">
         <div class="wrapper">
             <div class="game-screen">
-                <div class="water"></div>
+                    <svg class="wave"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 24 150 28"
+                    preserveAspectRatio="none">
+                <defs>
+                <path id="gentle-wave"
+                d="M-160 44c30 0 
+                   58-18 88-18s
+                   58 18 88 18 
+                   58-18 88-18 
+                   58 18 88 18
+                   v44h-352z" />
+                 </defs>
+                 <g class="parallax">
+                  <use xlink:href="#gentle-wave" x="50" y="0" fill="#4579e2"/>
+                  <use xlink:href="#gentle-wave" x="50" y="3" fill="#3461c1"/>
+                  <use xlink:href="#gentle-wave" x="50" y="6" fill="#2d55aa"/>  
+                 </g>
+               </svg> 
+               <div class="water">
+                </div>
 
                 <!-- <div class="drop">
                     <div class="sign">/</div>
@@ -81,29 +102,22 @@
                         <td colspan="2" class="numButton">0</td>
                         <td class="operator delete">Delete</td>
                     </tr>
-
                 </table>
-
-
-
             </div>
-
-
-
-
-
-
-
-
-
-
         </div>
-        <!-- <audio data-key="75" src="sounds/tom.wav"></audio> -->
+
     </section>
+    <section  class="high-score hide">
+        <div class="wrapper game-screen stat-screen">
 
-
-
-
+            <div class="game-over">Game Over</div>
+            <div class="points"><span>HiScore: </span> <span class="pts">0</span> </div>
+        </div>
+    </section>
+    <audio class="waves" src="./sounds/waves.mp3"></audio>
+    <audio class="splash" src="./sounds/splash.mp3"></audio>
+    <audio class="correct" src="./sounds/correct.mp3"></audio>
+    <audio class="error" src="./sounds/error.mp3"></audio>
     <script src="./index.js"></script>
 </body>
 
