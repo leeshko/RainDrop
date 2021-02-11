@@ -12,7 +12,8 @@
 
 <body>
 
-    <section class="intro">
+    <section class="intro ">
+        <!-- DELETE HIDE -->
         <div class="logo">
             <img src="./img/dropLogo.png" alt="Logo">
             <span class="logo-name">RainDrop Game</span>
@@ -26,30 +27,61 @@
         </div>
     </section>
 
+    <section class="options hide">
+        <div>
+
+            <div class="options-screen">
+
+                <h3> Choose operation </h3>
+                <form>
+                    <p>
+                        <input type="checkbox" name="/" /> / Деление
+                    </p>
+                    <p>
+                        <input type="checkbox" name="*" /> * Умножение
+                    </p>
+                    <p>
+                        <input type="checkbox" name="+" /> + Сложение
+                    </p>
+                    <p>
+                        <input type="checkbox" name="-" /> - Вычитание
+                    </p>
+
+
+                    <input type="number" class="number" id="myNumber1" maxlength="4" value="1">
+                    <p>Choose The First Maximum Number.</p>
+                    <input type="number" class="number" id="myNumber2" maxlength="4" value="1">
+
+                    <p>Choose The Second Maximum Number.</p>
+                    <p>
+                        <button class="button-options" type="button">Submit</button>
+                    </p>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
     <section class="game hide">
         <div class="wrapper">
             <div class="game-screen">
-                    <svg class="wave"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 24 150 28"
-                    preserveAspectRatio="none">
-                <defs>
-                <path id="gentle-wave"
-                d="M-160 44c30 0 
+                <svg class="wave" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 24 150 28" preserveAspectRatio="none">
+                    <defs>
+                        <path id="gentle-wave" d="M-160 44c30 0 
                    58-18 88-18s
                    58 18 88 18 
                    58-18 88-18 
                    58 18 88 18
                    v44h-352z" />
-                 </defs>
-                 <g class="parallax">
-                  <use xlink:href="#gentle-wave" x="50" y="0" fill="#4579e2"/>
-                  <use xlink:href="#gentle-wave" x="50" y="3" fill="#3461c1"/>
-                  <use xlink:href="#gentle-wave" x="50" y="6" fill="#2d55aa"/>  
-                 </g>
-               </svg> 
-               <div class="water">
+                    </defs>
+                    <g class="parallax">
+                        <use xlink:href="#gentle-wave" x="50" y="0" fill="#4579e2" />
+                        <use xlink:href="#gentle-wave" x="50" y="3" fill="#3461c1" />
+                        <use xlink:href="#gentle-wave" x="50" y="6" fill="#2d55aa" />
+                    </g>
+                </svg>
+                <div class="water">
                 </div>
 
                 <!-- <div class="drop">
@@ -109,7 +141,7 @@
         </div>
 
     </section>
-    <section  class="high-score hide">
+    <section class="high-score hide">
         <div class="wrapper game-screen stat-screen">
 
             <div class="game-over">Game Over</div>

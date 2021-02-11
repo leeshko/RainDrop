@@ -1,9 +1,10 @@
-const mainScreen   = document.querySelector('body');
-const startButton  = document.querySelector('.start-button');
-const demoButton   = document.querySelector('.intro-button');
-const screenFirst  = document.querySelector('.intro');
-const screenSecond = document.querySelector('.game');
-const fullScreen   = document.querySelector('.full-screen-img');
+const mainScreen     = document.querySelector('body');
+const startButton    = document.querySelector('.start-button');
+const demoButton     = document.querySelector('.intro-button');
+const screenFirst    = document.querySelector('.intro');
+const screenOptions  = document.querySelector('.options');
+const screenSecond   = document.querySelector('.game');
+const fullScreen     = document.querySelector('.full-screen-img');
 
 let callbackOnStart;
 let callbackOnDemo;
@@ -16,13 +17,13 @@ export default {
 
 function moveToGame() {
     screenFirst.classList.add('hide');
-    screenSecond.classList.remove('hide');
+    screenOptions.classList.remove('hide');
     callbackOnStart();
 }
 
 function moveToDemo() {
     screenFirst.classList.add('hide');
-    screenSecond.classList.remove('hide');
+    screenOptions.classList.remove('hide');
     callbackOnDemo();
 }
 

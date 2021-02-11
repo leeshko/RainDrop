@@ -1,11 +1,11 @@
 
 const gameScreen = document.querySelector('.game-screen');
-// const splashSound = document.querySelector('.splash');           // UNCOMMENT
+const splashSound = document.querySelector('.splash');           // UNCOMMENT
 const wavesSound = document.querySelector('.waves');
 const water = document.querySelector('.water');
-const operators = ['+', '-', '*', '/'];
-let maxFirstNum = 10;
-let maxSecondNum = 10;
+let operators;
+let maxFirstNum;
+let maxSecondNum;
 let dropSpeed = 50;
 let callbackWaterReached;
 let isGameover = false;
@@ -18,7 +18,8 @@ export default {
     dropInitialization: initDrops,
     checkResult: checkResult,
     reachedWater: reachedWater,
-    demoResult: demoResult
+    demoResult: demoResult,
+    createOperAndNumbers: createOperAndNumbers
 };
 
 function initDrops() {
@@ -38,7 +39,6 @@ function initDrops() {
         dropSpeed--;
         maxFirstNum++;
         maxSecondNum++;
-        // demoResult(result);
     }
     setTimeout(func, 3000);
 }
@@ -54,10 +54,13 @@ function randomDropHorizontalPos(minLeft, maxRight) {                           
 }
 
 function createDropContent() {
-    let num1 = createNumber(maxFirstNum);
+    const generatedValues = createOperAndNumbers();   // в этом месте что-то не бьет
+    let num1 = createNumber(generatedValues.maxFirstNum);
+    console.log(num1)
     let num2;
     let resultInDrop;
-    let operatorInDrop = operators[createNumber(4)];
+    console.log(num1)
+    let operatorInDrop = generatedValues.operators[createNumber(generatedValues.operators.length)];
     if (operatorInDrop === '*') {
         num2 = createNumber(maxSecondNum);
         resultInDrop = (num1 * num2);
@@ -107,7 +110,6 @@ function createDropElement(valuesInDrop) {
         numbersElement.append(firstNumberElement);
         numbersElement.append(secondNumberElement);
 
-        //start position
         const dropHeight = dropElement.offsetHeight;
         dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - dropElement.offsetWidth)}px`;
         dropElement.style.top = -dropHeight + 'px';
@@ -137,7 +139,6 @@ function createDropElement(valuesInDrop) {
         numbersElement.append(firstNumberElement);
         numbersElement.append(secondNumberElement);
 
-        //start position
         const dropHeight = dropElement.offsetHeight;
         dropElement.style.left = `${randomDropHorizontalPos(0, gameScreen.clientWidth - dropElement.offsetWidth)}px`;
         dropElement.style.top = -dropHeight + 'px';
@@ -217,3 +218,9 @@ function demoResult() {
     return keys[0];
 }
 
+function createOperAndNumbers(generatedArr) {
+    operators = generatedArr[0];
+    maxFirstNum = Number.parseInt(generatedArr[1][0]);
+    maxSecondNum = Number.parseInt(generatedArr[1][1]);
+    return {operators, maxFirstNum, maxSecondNum};
+}

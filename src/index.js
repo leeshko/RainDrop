@@ -1,4 +1,5 @@
 import startScreen  from './js/startScreen';
+import options      from './js/options';
 import calculator   from './js/calculator';
 import drop         from './js/drop';
 import scorePanel   from './js/scorePanel';
@@ -11,12 +12,19 @@ startScreen.init(startGame);
 startScreen.initDemo(startDemo);
 startScreen.fullScreen();
 
+
 function startGame() {
+  
     wavesSound.play();                         /////// SWITCH ON
+    options.createOptions(reactOnArray);
     calculator.init(reactOnEnter);
     drop.dropInitialization();
     drop.reachedWater(reactOnWater); 
     scorePanel.gameOver(finishGame);
+}
+
+function reactOnArray(array) {
+    drop.createOperAndNumbers(array);
 }
 
 function startDemo() {
