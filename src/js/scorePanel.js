@@ -4,15 +4,15 @@ const errorSound = document.querySelector('.error');
 
 let bonusScore = 10;
 let currentScore = 0;
-let childrenIndex = 2;
-let callBackGameOver;
+let livesIndex = 2;
+let callbackGameOver;
 
 
 export default {
     increaseScore: increaseScore,
     decreaseScore: decreaseScore,
     wastedLife: wastedLife,
-    gameOver: gameOver
+    init: init
 };
 
 function increaseScore() {
@@ -28,17 +28,16 @@ function decreaseScore() {
 }
 
 function wastedLife() {
-    lives.children[childrenIndex].style = 'visibility: hidden';
-    if (childrenIndex > 0) {
-        childrenIndex--;
-        currentScore = scorePanel.innerHTML;
-        currentScore = currentScore > 4 ? currentScore -= 5 : currentScore = 0;
+    lives.children[livesIndex].style = 'visibility: hidden';
+    if (livesIndex > 0) {
+        livesIndex--;
+        currentScore -= currentScore > 4 ? 5 : currentScore;
         scorePanel.innerHTML = currentScore;
     } else {
-        callBackGameOver();
-    }    
+        callbackGameOver();
+    }
 }
 
-function gameOver (finish) {
-    callBackGameOver = finish;
+function init(finish) {
+    callbackGameOver = finish;
 }

@@ -1,7 +1,7 @@
 const submitButton = document.querySelector('.button-options');
-const screenOptions  = document.querySelector('.options');
-const screenSecond   = document.querySelector('.game');
-let operatoraAndNumsArr = [];
+const screenOptions = document.querySelector('.options');
+const screenSecond = document.querySelector('.game');
+
 let onCreateCallback;
 
 export default {
@@ -10,30 +10,30 @@ export default {
 
 function createOptions(value) {
     onCreateCallback = value;
-    changeOptions();
+    submitButton.addEventListener('click', storeOptions);
 }
 
-function changeOptions() {
-    submitButton.addEventListener('click', function () {
-    let operatorsArray = [];
-    let numsArr = [];
-    let checkboxes = document.querySelectorAll(':checked');
-    let numbers = document.querySelectorAll('.number');
-
+function storeOptions() {
+    const operatorsArray = [];
+    const numsArr = [];
+    const checkboxes = document.querySelectorAll(':checked');
+    const numbers = document.querySelectorAll('.number');
+    
     for (let i = 0; i < checkboxes.length; i++) {
         operatorsArray.push(checkboxes[i].name);
     }
-    operatoraAndNumsArr.push(operatorsArray);
+    
     for (let i = 0; i < numbers.length; i++) {
         numsArr.push(numbers[i].value);
     }
-    operatoraAndNumsArr.push(numsArr);
-        onCreateCallback(operatoraAndNumsArr);
+    
+    if (operatorsArray.length > 0 && numsArr[0] !== '' && numsArr[1] !== '') {
+        const operatorsAndNumsArr = [];
+        operatorsAndNumsArr.push(operatorsArray);
+        operatorsAndNumsArr.push(numsArr);
+        onCreateCallback(operatorsAndNumsArr);
+
         screenOptions.classList.add('hide');
         screenSecond.classList.remove('hide');
-    });
-}   
-
-
-
-
+    }
+}

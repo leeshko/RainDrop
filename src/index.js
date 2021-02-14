@@ -1,44 +1,34 @@
-import startScreen  from './js/startScreen';
-import options      from './js/options';
-import calculator   from './js/calculator';
-import drop         from './js/drop';
-import scorePanel   from './js/scorePanel';
-import finalscreen  from './js/finalscreen';
+import startScreen from './js/startScreen';
+import options from './js/options';
+import calculator from './js/calculator';
+import drop from './js/drop';
+import scorePanel from './js/scorePanel';
+import finalscreen from './js/finalscreen';
 import './css/style.css';
 
 const wavesSound = document.querySelector('.waves');
+let interval;
 
-startScreen.init(startGame);
-startScreen.initDemo(startDemo);
-startScreen.fullScreen();
-
+startScreen.init(startGame, startDemo);
 
 function startGame() {
-  
-    wavesSound.play();                         /////// SWITCH ON
     options.createOptions(reactOnArray);
-    calculator.init(reactOnEnter);
-    drop.dropInitialization();
-    drop.reachedWater(reactOnWater); 
-    scorePanel.gameOver(finishGame);
 }
 
 function reactOnArray(array) {
-    drop.createOperAndNumbers(array);
+    wavesSound.play();
+    drop.dropInitialization(reactOnWater, array);
+    calculator.init(reactOnEnter);
+    scorePanel.init(finishGame);
 }
 
 function startDemo() {
-    wavesSound.play();                          /////// SWITCH ON
-    calculator.init(reactOnEnter);
-    drop.dropInitialization();
-    
-    setInterval(() => {
+    options.createOptions(reactOnArray);
+
+    interval = setInterval(() => {
         const result = drop.demoResult();
         calculator.pressEmulation(result);
-    }, 3000);
-   
-    drop.reachedWater(reactOnWater); 
-    scorePanel.gameOver(finishGame);
+    }, 4000);
 }
 
 function reactOnEnter(result) {
@@ -50,15 +40,18 @@ function compareResult(screenResult) {
     if (drop.checkResult(screenResult)) {
         scorePanel.increaseScore();
     } else {
-       scorePanel.decreaseScore();
+        scorePanel.decreaseScore();
     }
 }
 
-function reactOnWater(){
-    scorePanel.wastedLife(); 
+function reactOnWater() {
+    scorePanel.wastedLife();
 }
 
 function finishGame() {
     finalscreen.createStat();
     wavesSound.pause();
+    if (interval) {
+        clearInterval(interval);
+    }
 }
