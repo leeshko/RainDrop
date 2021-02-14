@@ -80,9 +80,37 @@ html {
 .wrapper {
     max-width: 1020px;
     height: 100vh;
-    margin: auto;
+    
     display: flex;
     justify-content: space-between;
+}
+
+.options {
+    max-width: 1020px;
+    height: 100vh;
+    margin: auto;
+    background: linear-gradient(to top, rgb(241, 248, 248), rgb(91, 194, 241));
+}
+
+.options-screen {
+    padding-top: 50px;
+    padding-left: 100px;
+}
+
+h3, p {
+    font-family: 'Potta One', cursive;
+    color: blue; 
+}
+
+.button-options {
+    margin: auto;
+    width: 200px;
+    height: 40px;
+    border-color: cornflowerblue;
+    background-color: deepskyblue;
+    cursor: pointer;
+    font-family: inherit;
+    color: blue;    
 }
 
 .game-screen {                                      /*game screen*/
@@ -157,8 +185,6 @@ html {
     flex-direction: column;
     flex: 2;
 }
-
-
 
 .calc-screen {                                          /*clc-screen*/
     background-color: rgb(205, 243, 243);

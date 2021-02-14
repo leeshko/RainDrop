@@ -1,9 +1,8 @@
-let calculatorDisplay = document.querySelector('.display');
 const numButtons = document.querySelectorAll('.numButton');
 const operatorButtons = document.querySelectorAll('.operator');
-const wavesSound = document.querySelector('.waves');
-let displayValue = '';   // value displayed on calc screen
-let displayResult = '';  // value after pressing enter
+const calculatorDisplay = document.querySelector('.display');
+
+let displayValue = ''; 
 let onEnterCallback;
 
 export default {
@@ -17,8 +16,50 @@ function initCalculator(onEnter) {
     calculatorPressOperator();
 }
 
+function pressEmulation(resultInDrop) {
+    if (resultInDrop === undefined) { return; }
+
+    let resString = resultInDrop.toString();
+    setTimeout(() => clickEmulation(resString), 3000);
+    setTimeout(clickEnterEmulation, 3500);
+}
+
+function clickEmulation(resString) {
+    for (let i = 0; i < resString.length; i++) {
+        const element = document.querySelector(`#btn${resString[i]}`);
+        element.click();
+        element.classList.add('demobutton');
+        element.addEventListener('transitionend', (() => element.classList.remove('demobutton')));
+    }
+}
+
+function clickEnterEmulation() {
+    const enter = document.querySelector('#btnEnter');
+    enter.classList.add('demobutton');
+    enter.addEventListener('transitionend', (() => enter.classList.remove('demobutton')));
+    enter.click();
+}
+
+function calculatorPressOperator() {
+    operatorButtons.forEach(operatorButton => {
+        operatorButton.addEventListener('click', () => pressOperatorButton(operatorButton.innerHTML));
+    });
+    window.addEventListener('keydown', (button) => pressOperatorButton(button.key));
+}
+
+function pressOperatorButton(button) {
+    if (button === 'Delete') {
+        deleteDisplay();
+    } else if (button === 'Backspace' || button === 'Clear') {
+        clearDisplay();
+    } else if (button === 'Enter') {
+        onEnterCallback(calculatorDisplay.innerHTML);
+        deleteDisplay();
+    }
+}
+
 function deleteDisplay() {
-    displayValue = undefined;
+    displayValue = '';
     calculatorDisplay.innerHTML = '';
 }
 
@@ -27,92 +68,19 @@ function clearDisplay() {
     displayValue = calculatorDisplay.innerHTML;
 }
 
-export function calculatorPressOperator() {
-    operatorButtons.forEach(operatorButton => {
-        operatorButton.addEventListener('click', function () {
-            if (operatorButton.innerHTML === 'Delete') {
-                deleteDisplay();
-            } else if (operatorButton.innerHTML === 'Clear') {
-                clearDisplay();
-            } else if (operatorButton.innerHTML === 'Enter') {
-                displayResult = calculatorDisplay.innerHTML;
-                onEnterCallback(displayResult);
-                deleteDisplay();
-            }
-        });
-    });
-    window.addEventListener('keydown', function (button) {
-        if (button.key === 'Delete') {
-            deleteDisplay();
-        } else if (button.key === 'Backspace') {
-            clearDisplay();
-        } else if (button.key === 'Enter') {
-            displayResult = calculatorDisplay.innerHTML;
-            onEnterCallback(displayResult);
-            deleteDisplay();
-        }
-    })
-}
-
-export function calculatorPressNumber() {
+function calculatorPressNumber() {
     numButtons.forEach(numButton => {
-        numButton.addEventListener(
-            'click', function () {
-                if (!displayValue) {
-                    calculatorDisplay.innerHTML = numButton.innerHTML;
-                    displayValue = numButton.innerHTML;
-                } else if (displayValue > 99) {
-                    return;
-                } else {
-                    calculatorDisplay.innerHTML += numButton.innerHTML;
-                    displayValue = calculatorDisplay.innerHTML;
-                }
-            })
+        numButton.addEventListener('click', () => pressNumber(numButton.innerHTML));
     });
-    window.addEventListener('keydown', function (button) {
-        if (parseInt(button.key) || button.key === '0') {
-            if (!displayValue) {
-                calculatorDisplay.innerHTML = button.key;
-                displayValue = button.key;
-            } else if (displayValue.length > 4) {
-                return;
-            } else {
-                calculatorDisplay.innerHTML += button.key;
-                displayValue = calculatorDisplay.innerHTML;
-            }
-            return;
-        }
-    })
+    window.addEventListener('keydown', (button) => {
+        if (!parseInt(button.key) && button.key !== '0') { return; }
+        pressNumber(button.key);
+    });
 }
 
-function pressEmulation(resultInDrop) {
-   
-    console.log(typeof resultInDrop, resultInDrop)
-        let resString = resultInDrop.toString();
-        setTimeout(() => {
-            for (let i = 0; i < resString.length; i++) {
-                const element = document.querySelector(`#btn${resString[i]}`);
-                element.click();
-                element.classList.add('demobutton');  
-                element.addEventListener('transitionend', (() => element.classList.remove('demobutton')));   
-            }
-        }, 3000);
-
-        setTimeout(() => {
-            const enter = document.querySelector('#btnEnter');
-            enter.classList.add('demobutton');  
-            enter.addEventListener('transitionend', (() => enter.classList.remove('demobutton')));
-            enter.click();
-
-        }, 3500);
-    
-    // displayResult += btn1.innerHTML;
-    // console.log(displayResult)
-    // // calculatorDisplay.innerHTML = displayValue;
-
-
-    //    displayResult = calculatorDisplay.innerHTML;
-    //                 onEnterCallback(displayResult);
-    //                 deleteDisplay();
-
+function pressNumber(button) {
+    if (displayValue.length < 5) {
+        calculatorDisplay.innerHTML += button;
+        displayValue = calculatorDisplay.innerHTML;
+    }
 }
